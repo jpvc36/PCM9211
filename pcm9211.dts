@@ -106,9 +106,9 @@
 		VCC-supply = <&vdd_3v3_reg>;
 		VDDRX-supply = <&vdd_3v3_reg>;
 		DVDD-supply = <&vdd_3v3_reg>;
-		ti,group-function = /bits/ 8 <0x01 0x05 0x00>;		// reg 0x6f
-                ti,mpio-b-flags-gpio = /bits/ 8 <0x00 0x00 0x00 0x00>;	// reg 0x71
-		ti,mpo-function = /bits/ 8 <0x02 0x0d>;			// reg 0x78
+		ti,group-function = /bits/ 8 <0x01 0x05 0x00>;		// reg 0x6f ADC AUXIN2
+                ti,mpio-b-flags-gpio = /bits/ 8 <0x00 0x00 0x00 0x00>;	// reg 0x71 default
+		ti,mpo-function = /bits/ 8 <0x02 0x0d>;			// reg 0x78 MPO0 high, MPO1 TXOUT
 		ti,int0-function = /bits/ 8 <0x00 0xfd>;		// reg 0x20 0x2a INT0-FSrenew
 		ti,int1-function = /bits/ 8 <0x01 0xfe>;		// reg 0x20 0x2b INT1-ADCdet
 		ti,adc-function = /bits/ 8 <0x03>;			// reg 0x2e -48dB
