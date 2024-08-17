@@ -1,0 +1,134 @@
+//Device tree overlay for generic I2S audio codec. ex) Asahi kasei AK4558
+//Raspi: I2S slave
+//SPdif Codec: I2S master
+//TAS5805m: slave to SPdif
+// dtc -@ -H epapr -O dtb -o /boot/overlays/pcm9211.dtbo -Wno-unit_address_vs_reg pcm9211.dts
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "brcm,bcm2708";
+
+    fragment@0 {
+        target = <&gpio>;
+        __overlay__ {
+            codec_reset: codec-reset {
+                gpio-hog;
+                gpios = <17 0>;  // GPIO pin 17, initially set to high
+                output-high;
+                line-name = "Codec Reset Pin";
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&sound>;
+        __overlay__ {
+            compatible = "simple-audio-card";
+            simple-audio-card,name = "AmpliMuseAmp";
+            status="okay";
+
+            capture_link: simple-audio-card,dai-link@0 {
+                format = "i2s";
+
+                // Set RasPi to I2S slave
+                bitclock-master = <&r_codec_dai>;
+                frame-master = <&r_codec_dai>;
+
+                r_cpu_dai: cpu {
+                    sound-dai = <&i2s>;
+
+                // TDM slot configuration for stereo
+                    dai-tdm-slot-num = <2>;
+                    dai-tdm-slot-width = <32>;
+                };
+
+                r_codec_dai: codec {
+                    sound-dai = <&codec_in>;
+                };
+            };
+
+           playback_link: simple-audio-card,dai-link@1 {
+                format = "i2s";
+
+                // Set RasPi to I2S slave
+                bitclock-master = <&p_codec_dai>;
+                frame-master = <&p_codec_dai>;
+
+                p_cpu_dai: cpu {
+                    sound-dai = <&i2s>;
+
+                // TDM slot configuration for stereo
+                    dai-tdm-slot-num = <2>;
+                    dai-tdm-slot-width = <32>;
+                };
+
+                p_codec_dai: codec {
+                    sound-dai = <&codec_out>;
+                };
+            };
+
+     };
+    };
+    fragment@2 {
+        target = <&i2s>;
+        __overlay__ {
+            #sound-dai-cells = <0>;
+            status = "okay";
+        };
+    };
+
+    fragment@3 {
+        target = <&i2c1>;
+        __overlay__ {
+            status = "okay";
+            clock-frequency = <400000>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            codec_out: tas5805m@60 {
+                #sound-dai-cells = <0>;
+                compatible = "ti,tas5805m";
+                reg = <0x60>;
+                pvdd-supply = <&vdd_3v3_reg>;
+//                pdn-gpios = <&gpio 4 0>;
+                pdn-gpios = <&gpio 25 0>;
+                ti,dsp-config-name = "default";
+            };
+
+            codec_in: pcm9211@40 {
+                #sound-dai-cells = <0>;
+                compatible = "ti,pcm9211";
+                reg = <0x40>;
+//		VCCAD-supply = <&reg_5v0_analog>;
+//		VCC-supply = <&reg_3v3_pll_analog>;
+		VCCAD-supply = <&vdd_5v0_reg>;
+		VCC-supply = <&vdd_3v3_reg>;
+		VDDRX-supply = <&vdd_3v3_reg>;
+		DVDD-supply = <&vdd_3v3_reg>;
+		ti,group-function = /bits/ 8 <0x01 0x05 0x00>;		// reg 0x6f
+                ti,mpio-b-flags-gpio = /bits/ 8 <0x00 0x00 0x00 0x00>;	// reg 0x71
+		ti,mpo-function = /bits/ 8 <0x02 0x0d>;			// reg 0x78
+		ti,int0-function = /bits/ 8 <0x00 0xfd>;		// reg 0x20 0x2a INT0-FSrenew
+		ti,int1-function = /bits/ 8 <0x01 0xfe>;		// reg 0x20 0x2b INT1-ADCdet
+		ti,adc-function = /bits/ 8 <0x03>;			// reg 0x2e -48dB
+//		ti,dit-output = /bits/ 8 <0x00>;			// reg 0x60 DIR/ADC
+		ti,dit-output = /bits/ 8 <0x55>;			// reg 0x60 AUXIN2
+//		int0-gpio = <&gpio 26 0>;
+//		clocks = <&xti_clk>;
+//		clock-names = "xti";
+		sysclk = <24576000>;
+                pvdd-supply = <&vdd_3v3_reg>;
+                pdn-gpios = <&gpio 4 0>;
+//                pdn-gpios = <&gpio 17 0>;
+                ti,dsp-config-name = "default";
+            };
+
+        };
+    };
+
+    __overrides__ {
+//        card-name = <&capture_link>,"simple-audio-card,name";
+	reset-pin = <&codec_reset>,"gpios:0";
+    };
+};
