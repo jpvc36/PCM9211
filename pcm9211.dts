@@ -112,6 +112,7 @@
 		ti,int0-function = /bits/ 8 <0x00 0xfd>;		// reg 0x20 0x2a INT0-FSrenew
 		ti,int1-function = /bits/ 8 <0x01 0xfe>;		// reg 0x20 0x2b INT1-ADCdet
 		ti,adc-function = /bits/ 8 <0x03>;			// reg 0x2e -48dB
+		ti,clocks-function = /bits/ 8 <0x02 0x1a 0x22 0x22 >;	// reg 0x30 - 0x33
 //		ti,dit-output = /bits/ 8 <0x00>;			// reg 0x60 DIR/ADC
 		ti,dit-output = /bits/ 8 <0x55>;			// reg 0x60 AUXIN2
 //		int0-gpio = <&gpio 26 0>;
