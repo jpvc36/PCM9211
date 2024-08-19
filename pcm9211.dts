@@ -3,6 +3,7 @@
 //SPdif Codec: I2S master
 //TAS5805m: slave to SPdif
 // dtc -@ -H epapr -O dtb -o /boot/overlays/pcm9211.dtbo -Wno-unit_address_vs_reg pcm9211.dts
+// i2creg: TAS5805M@0x2c, TAS5806M@0x2c, TAS5806MD@0x2c, TAS5822M@0x2c, TAS5825M@0x4c, TAS5825P@0x4c, TAS5828M@0x60, TAS5827@0x60
 /dts-v1/;
 /plugin/;
 
@@ -86,10 +87,10 @@
             #address-cells = <1>;
             #size-cells = <0>;
 
-            codec_out: tas5805m@60 {
+            codec_out: tas5805m@2c {
                 #sound-dai-cells = <0>;
                 compatible = "ti,tas5805m";
-                reg = <0x60>;
+                reg = <0x2c>;
                 pvdd-supply = <&vdd_3v3_reg>;
 //                pdn-gpios = <&gpio 4 0>;
                 pdn-gpios = <&gpio 25 0>;
@@ -131,5 +132,6 @@
     __overrides__ {
 //        card-name = <&capture_link>,"simple-audio-card,name";
 	reset-pin = <&codec_reset>,"gpios:0";
+	i2creg = <&codec_out>,"reg:<>";
     };
 };
