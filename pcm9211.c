@@ -976,8 +976,10 @@ static int pcm9211_write_pinconfig(struct device *dev)
 	ret = of_property_read_u8_array(dev->of_node, "ti,clocks-function", values, 4);
 	if (!ret) {
 		/* Write Clocks function selection */
-		for (i = 0, val = 0; i < 4; i++)
+		for (i = 0, val = 0; i < 4; i++) {
+			val = values[i];
 			ret |= regmap_write(priv->regmap, PCM9211_DIR_RSCLK_RATIO + i, val);	// 0x30 + i
+		}
 		if (ret) {
 			dev_err(dev, "Failed to update clocks function selection: %d\n",
 					ret);
