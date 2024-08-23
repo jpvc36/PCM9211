@@ -18,7 +18,7 @@
 #include "pcm9211.h"
 
 static int pcm9211_i2c_probe(struct i2c_client *i2c)//,
-//		const struct i2c_device_id *id)
+		const struct i2c_device_id *id)
 {
 	struct regmap *regmap;
 
