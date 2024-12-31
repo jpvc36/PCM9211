@@ -987,6 +987,18 @@ static int pcm9211_write_pinconfig(struct device *dev)
 		}
 	}
 
+	ret = of_property_read_u8(dev->of_node, "ti,osc-control", values);
+	if (!ret) {
+		val = values[0];
+		ret = regmap_write(priv->regmap, PCM9211_OSC_CTRL, val);			// 0x24
+//		dev_dbg(dev, "OSC_CTRL ret=%d val=0x%x", ret, val);
+		if (ret) {
+			dev_err(dev, "Failed to update OSC control selection: %d\n",
+					ret);
+			return ret;
+		}
+	}
+
 	ret = of_property_read_u8(dev->of_node, "ti,dit-output", values);
 	if (!ret) {
 		val = values[0];
