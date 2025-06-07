@@ -1058,7 +1058,7 @@ static const DECLARE_TLV_DB_SCALE(pcm9211_adc_tlv, -10050, 50, 1);
 static const char *const pcm9211_main_outputs[] = { "AUTO", "DIR", "ADC",
 	"AUXIN0", "AUXIN1", "AUXIN2" };
 static const struct soc_enum pcm9211_main_sclk_enum =
-	SOC_ENUM_SINGLE(PCM9211_MAIN_OUT_SOURCE, 4, 4, pcm9211_main_outputs);
+	SOC_ENUM_SINGLE(PCM9211_MAIN_OUT_SOURCE, 4, 6, pcm9211_main_outputs);					// (xreg, xshift, xitems, xtexts)
 
 static const struct snd_kcontrol_new pcm9211_snd_controls[] = {
 //	SOC_DOUBLE_R_RANGE_TLV("ADC Attenuation",
@@ -1115,7 +1115,7 @@ static const struct snd_kcontrol_new pcm9211_dir_mux_control =
 	SOC_DAPM_ENUM("DIR Input Select", pcm9211_dir_mux_enum);
 
 static const struct soc_enum pcm9211_main_out_enum =
-	SOC_ENUM_SINGLE(PCM9211_MAIN_OUT_SOURCE, 0, 4, pcm9211_main_outputs);
+	SOC_ENUM_SINGLE(PCM9211_MAIN_OUT_SOURCE, 0, 6, pcm9211_main_outputs);					// (xreg, xshift, xitems, xtexts)
 static const struct snd_kcontrol_new pcm9211_main_out_control =
 	SOC_DAPM_ENUM("MAIN Output Select", pcm9211_main_out_enum);
 
