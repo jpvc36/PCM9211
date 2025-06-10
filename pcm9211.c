@@ -1132,6 +1132,9 @@ static const struct snd_soc_dapm_widget pcm9211_dapm_widgets[] = {
 	SND_SOC_DAPM_INPUT("RXIN7"),
 	SND_SOC_DAPM_INPUT("VINL"),
 	SND_SOC_DAPM_INPUT("VINR"),
+	SND_SOC_DAPM_INPUT("AUXIN0"),
+	SND_SOC_DAPM_INPUT("AUXIN1"),
+	SND_SOC_DAPM_INPUT("AUXIN2"),
 
 	SND_SOC_DAPM_ADC("ADC", NULL, PCM9211_SYS_RESET,
 			PCM9211_SYS_RESET_ADDIS_SHIFT, 1),
@@ -1172,6 +1175,9 @@ static const struct snd_soc_dapm_route pcm9211_dapm_routes[] = {
 	{ "MAIN Output Mux", "DIR", "DIR" },
 	{ "MAIN Output Mux", "ADC", "ADC" },
 	{ "MAIN Output Mux", "AUTO", "AUTO" },
+	{ "MAIN Output Mux", "AUXIN0", "AUXIN0" },
+	{ "MAIN Output Mux", "AUXIN1", "AUXIN1" },
+	{ "MAIN Output Mux", "AUXIN2", "AUXIN2" },
 
 	{ "MAIN", NULL, "MAIN Output Mux" },
 };
