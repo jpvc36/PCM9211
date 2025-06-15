@@ -117,6 +117,7 @@
                 ti,osc-control = /bits/ 8 <0x10>;                       // reg 0x24 OSC 24.576 MHz
 //		ti,dit-output = /bits/ 8 <0x00>;			// reg 0x60 DIR/ADC
 		ti,dit-output = /bits/ 8 <0x55>;			// reg 0x60 AUXIN2
+		ti,aux-output = /bits/ 8 <0x44>;			// reg 0x6c AUXOUT
 //		int0-gpio = <&gpio 26 0>;
 //		clocks = <&xti_clk>;
 //		clock-names = "xti";
