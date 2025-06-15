@@ -1011,6 +1011,18 @@ static int pcm9211_write_pinconfig(struct device *dev)
 		}
 	}
 
+	ret = of_property_read_u8(dev->of_node, "ti,aux-output", values);
+	if (!ret) {
+		val = values[0];
+		ret = regmap_write(priv->regmap, PCM9211_AUX_OUT_SOURCE, val);			// 0x60
+//		dev_dbg(dev, "AUX_OUTPUT ret=%d val=0x%x",ret,val);
+		if (ret) {
+			dev_err(dev, "Failed to update AUX output selection: %d\n",
+					ret);
+			return ret;
+		}
+	}
+
 	return 0;
 }
 
